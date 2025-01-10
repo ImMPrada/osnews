@@ -46,7 +46,14 @@ group :development, :test do
   gem 'brakeman', require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem 'rubocop-rails-omakase', require: false
+  gem 'byebug', '~> 11.1'
+  gem 'factory_bot_rails', '~> 6.4'
+  gem 'faker', '~> 3.5'
+  gem 'guard-rspec', '~> 4.7'
+  gem 'rspec-rails', '~> 7.1'
+  gem 'rubocop-rails', '~> 2.28'
+  gem 'rubocop-rspec', '~> 3.3'
+  gem 'shoulda-matchers', '~> 6.4'
 end
 
 source 'https://rubygems.pkg.github.com/bro-garden' do
