@@ -1,0 +1,50 @@
+name: Linters
+
+on:
+  workflow_call:
+
+jobs:
+  rubocop:
+    permissions:
+      contents: read
+      pull-requests: read
+
+    concurrency: 
+      group: ${{ github.workflow }}-${{ github.ref }}-lint
+      cancel-in-progress: true
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+  
+      - name: Restore Ruby bundle cache
+        uses: actions/cache@v4
+        with:
+          path: ~/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+  
+      - name: Bundle install (restore cached gems)
+        run: |
+          bundle config set --local path '~/vendor/bundle'
+          bundle install
+
+      - name: Gems audit
+        run: bundle exec bundle-audit check --update
+
+      - name: Run Brakeman
+        run: bundle exec brakeman -z
+  
+      - name: Run RuboCop
+        run: bundle exec rubocop
+
+      - name: Markdownlint
+        run: bundle exec mdl .
