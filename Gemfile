@@ -47,6 +47,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem 'byebug', '~> 11.1'
+  gem 'dotenv', '~> 3.1'
   gem 'factory_bot_rails', '~> 6.4'
   gem 'faker', '~> 3.5'
   gem 'guard-rspec', '~> 4.7'
