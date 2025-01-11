@@ -24,11 +24,11 @@ module Resolvers
     end
 
     def guild_already_exists_response
-      @content = 'This guild is already connected to osnews through this channel'
+      @content = '✨ This Discord server is already connected to OSNews in this channel! ✨'
     end
 
     def new_guild_response
-      @content = 'Hello this guild is now connected to osnews through this channel'
+      @content = '✨ This guild is now connected to OSNews through this channel! ✨'
     end
   end
 end

@@ -25,27 +25,23 @@ RSpec.describe Resolvers::Connect do
       end
 
       it 'returns existing guild message' do
-        expect(resolver.content).to eq('This guild is already connected to osnews through this channel')
+        expect(resolver.content).to eq('✨ This Discord server is already connected to OSNews in this channel! ✨')
       end
     end
 
     context 'when guild does not exist' do
-      let(:guild) { Guild.last }
-
-      before do
-        resolver.execute_action
-      end
+      before { resolver.execute_action }
 
       it 'creates a new guild' do
         expect(Guild.count).to eq(1)
       end
 
-      it 'sets the correct external_id' do
-        expect(guild.external_id).to eq(guild_id)
+      it 'sets the correct external_id for the guild' do
+        expect(Guild.last.external_id).to eq(guild_id)
       end
 
-      it 'sets the correct channel_id' do
-        expect(guild.channel_id).to eq(channel_id)
+      it 'sets the correct channel_id for the guild' do
+        expect(Guild.last.channel_id).to eq(channel_id)
       end
 
       it 'sets the callback type' do
@@ -53,7 +49,7 @@ RSpec.describe Resolvers::Connect do
       end
 
       it 'returns new guild message' do
-        expect(resolver.content).to eq('Hello this guild is now connected to osnews through this channel')
+        expect(resolver.content).to eq('✨ This guild is now connected to OSNews through this channel! ✨')
       end
     end
   end
