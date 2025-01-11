@@ -3,11 +3,16 @@
 #   Refer for explanation to following link:
 #   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
 #
+
 pre-push:
+  parallel: true
   commands:
     gems-audit:
       tags: backend security
       run: bundle audit
+    rspec:
+      tags: backend unit tests
+      run: bundle exec rspec
 
 pre-commit:
   parallel: true

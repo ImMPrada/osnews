@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe RSS::Apple, :vcr do
+RSpec.describe Rss::Apple, :vcr do
   describe '#call' do
     subject(:service) { described_class.new }
 

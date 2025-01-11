@@ -1,4 +1,4 @@
-module RSS
+module Rss
   class Apple
     URL = 'https://developer.apple.com/news/releases/rss/releases.rss'.freeze
     TITLE_REGEX = /^(iOS|iPadOS|macOS|tvOS|visionOS|watchOS)/
