@@ -59,5 +59,9 @@ end
 
 source 'https://rubygems.pkg.github.com/bro-garden' do
   gem 'bg_cop'
-  gem 'discord_engine'
+  # gem 'discord_engine'
 end
+
+gem 'discord_engine', path: '../discord-engine'
+
+gem 'jbuilder', '~> 2.13'
