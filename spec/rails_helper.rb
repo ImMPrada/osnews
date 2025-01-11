@@ -6,6 +6,7 @@ require_relative '../config/environment'
 
 require 'support/shoulda_matchers'
 require 'support/factory_bot'
+require 'support/vcr'
 require 'discord_engine'
 
 abort('The Rails environment is running in production mode!') if Rails.env.production?
