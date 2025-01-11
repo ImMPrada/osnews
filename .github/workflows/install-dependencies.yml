@@ -1,0 +1,65 @@
+name: Install Dependencies
+
+on:
+  workflow_call:
+
+env:
+  BUNDLE_RUBYGEMS__PKG__GITHUB__COM: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  install-dependencies:
+    permissions:
+      contents: read
+      pull-requests: read
+      packages: read
+
+    concurrency: 
+      group: ${{ github.workflow }}-${{ github.ref }}-install_dependencies
+      cancel-in-progress: true
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+  
+      - name: Cache Ruby bundle
+        id: cache-ruby-bundle
+        uses: actions/cache@v4
+        with:
+          path: ~/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+  
+      - name: Bundle install
+        run: |
+          bundle config set --local path '~/vendor/bundle'
+          bundle install
+  
+      - name: Check if new gems were installed
+        id: check-gems
+        run: |
+          echo "Checking if new gems were installed..."
+          if [ -d "~/vendor/bundle" ] && [ "$(ls -A ~/vendor/bundle)" ]; then
+            echo "::set-output name=updated::false"
+          else
+            echo "::set-output name=updated::true"
+          fi
+  
+      - name: Save bundle as an artifact
+        if: steps.check-gems.outputs.updated == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundled-gems
+          path: ~/vendor/bundle
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsodium-dev

@@ -1,2 +1,9 @@
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/**/*'
+    - 'bin/**/*'
+
 inherit_gem:
   bg_cop: 'lib/rubocop/config/.rubocop.yml'
+

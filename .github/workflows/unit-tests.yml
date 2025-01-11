@@ -1,0 +1,81 @@
+name: Run Unit Tests
+on:
+  workflow_call:
+
+env:
+  RAILS_ENV: test
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+
+jobs:
+  rspec:
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: read
+
+    concurrency: 
+      group: ${{ github.workflow }}-${{ github.ref }}-unit_tests
+      cancel-in-progress: true
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+      - name: Cache Ruby bundle
+        uses: actions/cache@v4
+        with:
+          path: ~/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Bundle install
+        run: |
+          bundle config set --local path '~/vendor/bundle'
+          bundle install
+
+      - name: Prepare database
+        run: |
+          cp config/database.github-workflows.yml config/database.yml
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+
+      - name: Run RSpec tests
+        run: bundle exec rspec
+
+      # - name: Generate Swagger Documentation
+      #   run: bundle exec rake app:rswag:specs:swaggerize
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit-action
+        with:
+          skip_fetch: false
+          branch: ${{ github.head_ref }}
+          commit_message: Update Swagger Documentation
+          file_pattern: '**/swagger.yaml'

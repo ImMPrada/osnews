@@ -61,3 +61,5 @@ source 'https://rubygems.pkg.github.com/bro-garden' do
   gem 'bg_cop'
   gem 'discord_engine'
 end
+
+gem 'jbuilder', '~> 2.13'

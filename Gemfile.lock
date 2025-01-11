@@ -445,6 +445,7 @@ DEPENDENCIES
   factory_bot_rails (~> 6.4)
   faker (~> 3.5)
   guard-rspec (~> 4.7)
+  jbuilder (~> 2.13)
   kamal
   pg (~> 1.1)
   puma (>= 5.0)
