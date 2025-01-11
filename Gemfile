@@ -56,6 +56,7 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.4'
   gem 'faker', '~> 3.5'
   gem 'guard-rspec', '~> 4.7'
+  gem 'lefthook', '~> 1.10'
   gem 'rspec-rails', '~> 7.1'
   gem 'rubocop-rails', '~> 2.28'
   gem 'rubocop-rspec', '~> 3.3'
