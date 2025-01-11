@@ -63,3 +63,5 @@ source 'https://rubygems.pkg.github.com/bro-garden' do
 end
 
 gem 'jbuilder', '~> 2.13'
+
+gem 'rss', '~> 0.3.1'
