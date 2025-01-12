@@ -71,7 +71,7 @@ RSpec.describe Rss::Apple, :vcr do
 
           it 'sets the correct description' do
             service.call(pull_news: true)
-            expect(FeedItem.last.description).to eq('New features and improvements')
+            expect(FeedItem.last.description).to eq('iOS 17.3')
           end
 
           it 'sets the publication date' do
@@ -102,7 +102,7 @@ RSpec.describe Rss::Apple, :vcr do
             it 'updates the description' do
               service.call(pull_news: true)
               existing_item.reload
-              expect(existing_item.description).to eq('New features and improvements')
+              expect(existing_item.description).to eq('iOS 17.3')
             end
           end
 

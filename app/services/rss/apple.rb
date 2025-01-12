@@ -61,13 +61,13 @@ module Rss
     end
 
     def create_new_record(name, data)
-      FeedItem.create(name:, description: data.description, publication_date: data.pubDate)
+      FeedItem.create(name:, description: data.title, publication_date: data.pubDate)
     end
 
     def update_if_newer(existing_item, data)
       return unless newer_version?(data, existing_item)
 
-      existing_item.update(description: data.description, publication_date: data.pubDate)
+      existing_item.update(description: data.title, publication_date: data.pubDate)
     end
   end
 end
