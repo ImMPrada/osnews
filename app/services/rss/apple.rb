@@ -5,9 +5,11 @@ module Rss
 
     attr_accessor :title, :items
 
-    def call
+    def call(pull_news: false)
       @items = build_items
       @title = feed.channel.title
+
+      save_items_to_db if pull_news
     end
 
     private
@@ -43,7 +45,29 @@ module Rss
     end
 
     def newer_version?(item1, item2)
-      item1.pubDate.to_s > item2.pubDate.to_s
+      date1 = item1.respond_to?(:pubDate) ? item1.pubDate : item1.publication_date
+      date2 = item2.respond_to?(:pubDate) ? item2.pubDate : item2.publication_date
+
+      date1.to_s > date2.to_s
+    end
+
+    def save_items_to_db
+      items.each do |name, data|
+        existing_item = FeedItem.find_by(name:)
+        create_new_record(name, data) and next if existing_item.blank?
+
+        update_if_newer(existing_item, data)
+      end
+    end
+
+    def create_new_record(name, data)
+      FeedItem.create(name:, description: data.description, publication_date: data.pubDate)
+    end
+
+    def update_if_newer(existing_item, data)
+      return unless newer_version?(data, existing_item)
+
+      existing_item.update(description: data.description, publication_date: data.pubDate)
     end
   end
 end
