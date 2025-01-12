@@ -71,7 +71,7 @@ module Rss
       return unless newer_version?(data, existing_item)
 
       existing_item.update(description: data.title, publication_date: data.pubDate)
-      updated_items_list << existing_item.name
+      updated_items_list << existing_item
     end
   end
 end
