@@ -22,7 +22,7 @@ RSpec.describe ReportNewVersionsJob, type: :job do
 
     context 'when feed items exist' do
       it 'sends a formatted message to all guilds' do
-        expected_content = "**we have some news!!**\n\n**New iOS version** -- 2024-01-15\n"
+        expected_content = "🤖 **we have some news!!**\n\n**New iOS version** 🗓️ 2024-01-15\n"
         allow(DiscordEngine::Message).to receive(:new).and_return(message_double)
 
         described_class.perform_now([feed_item])

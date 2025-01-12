@@ -32,7 +32,7 @@ RSpec.describe Resolvers::Report do
       let(:guild) { create(:guild, external_id: guild_id, channel_id: channel_id) }
       let(:older_feed_item) { create(:feed_item, description: 'News 1', publication_date: '2024-01-01') }
       let(:newer_feed_item) { create(:feed_item, description: 'News 2', publication_date: '2024-01-02') }
-      let(:expected_content) { "\n**News 1** -- 2024-01-01\n**News 2** -- 2024-01-02" }
+      let(:expected_content) { "\n**News 1** 🗓️ 2024-01-01\n**News 2** 🗓️ 2024-01-02" }
 
       before do
         guild

@@ -23,7 +23,7 @@ module Resolvers
     def add_news_to_response
       feed_items = FeedItem.all
       feed_items.each do |feed_item|
-        @content += "\n**#{feed_item.description}** -- #{feed_item.publication_date.to_date}"
+        @content += "\n**#{feed_item.description}** 🗓️ #{feed_item.publication_date.to_date}"
       end
     end
   end
