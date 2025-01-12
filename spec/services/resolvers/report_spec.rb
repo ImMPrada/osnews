@@ -29,13 +29,15 @@ RSpec.describe Resolvers::Report do
     end
 
     context 'when guild is connected' do
-      let(:company) { create(:company, name: 'Apple') }
-      let(:feed_item) { create(:feed_item, company: company) }
-      let(:report_content) { "\n\n**Apple**\n\n#{feed_item.description}" }
+      let(:guild) { create(:guild, external_id: guild_id, channel_id: channel_id) }
+      let(:older_feed_item) { create(:feed_item, description: 'News 1', publication_date: '2024-01-01') }
+      let(:newer_feed_item) { create(:feed_item, description: 'News 2', publication_date: '2024-01-02') }
+      let(:expected_content) { "\n**News 1** -- 2024-01-01\n**News 2** -- 2024-01-02" }
 
       before do
-        create(:guild, external_id: guild_id, channel_id: channel_id)
-        feed_item
+        guild
+        older_feed_item
+        newer_feed_item
         resolver.execute_action
       end
 
@@ -43,8 +45,20 @@ RSpec.describe Resolvers::Report do
         expect(resolver.callback.type).to eq(channel_message_callback.type)
       end
 
-      it 'returns the report content' do
-        expect(resolver.content).to eq(report_content)
+      it 'has the expected number of feed items' do
+        expect(FeedItem.count).to eq(2)
+      end
+
+      it 'includes the older feed item' do
+        expect(resolver.content).to include(older_feed_item.description)
+      end
+
+      it 'includes the newer feed item' do
+        expect(resolver.content).to include(newer_feed_item.description)
+      end
+
+      it 'formats the content correctly' do
+        expect(resolver.content).to eq(expected_content)
       end
     end
   end

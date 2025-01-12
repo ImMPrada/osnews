@@ -14,21 +14,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_221650) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "companies", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_companies_on_name", unique: true
-  end
-
   create_table "feed_items", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "publication_date"
-    t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["company_id"], name: "index_feed_items_on_company_id"
     t.index ["name"], name: "index_feed_items_on_name"
   end
 
@@ -39,6 +30,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_221650) do
     t.datetime "updated_at", null: false
     t.index ["external_id", "channel_id"], name: "index_guilds_on_external_id_and_channel_id", unique: true
   end
-
-  add_foreign_key "feed_items", "companies"
 end
