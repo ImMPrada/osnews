@@ -45,3 +45,15 @@ To deploy the application, use the following command, replacing the build args w
 ```bash
 fly deploy --build-arg GITHUB_USERNAME= --build-arg GITHUB_TOKEN=
 ```
+
+To connect to console:
+
+```bash
+fly ssh console
+```
+
+Then we can run rake tasks, or even access to the console of the running container.
+
+```bash
+bundle exec rake db:migrate
+```

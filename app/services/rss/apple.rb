@@ -3,11 +3,12 @@ module Rss
     URL = 'https://developer.apple.com/news/releases/rss/releases.rss'.freeze
     TITLE_REGEX = /^(iOS|iPadOS|macOS|tvOS|visionOS|watchOS)/
 
-    attr_accessor :title, :items
+    attr_accessor :title, :items, :updated_items_list
 
     def call(pull_news: false)
       @items = build_items
       @title = feed.channel.title
+      @updated_items_list = []
 
       save_items_to_db if pull_news
     end
@@ -58,6 +59,8 @@ module Rss
 
         update_if_newer(existing_item, data)
       end
+
+      ReportNewVersionsJob.perform_later(updated_items_list)
     end
 
     def create_new_record(name, data)
@@ -68,6 +71,7 @@ module Rss
       return unless newer_version?(data, existing_item)
 
       existing_item.update(description: data.title, publication_date: data.pubDate)
+      updated_items_list << existing_item.name
     end
   end
 end
