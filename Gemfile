@@ -39,6 +39,7 @@ gem 'thruster', require: false
 # gem "rack-cors"
 
 group :test do
+  gem 'timecop'
   gem 'vcr'
   gem 'webmock'
 end

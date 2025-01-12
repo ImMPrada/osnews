@@ -398,6 +398,7 @@ GEM
     thruster (0.1.10-arm64-darwin)
     thruster (0.1.10-x86_64-darwin)
     thruster (0.1.10-x86_64-linux)
+    timecop (0.9.10)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -483,6 +484,7 @@ DEPENDENCIES
   solid_cache
   solid_queue
   thruster
+  timecop
   tzinfo-data
   vcr
   webmock
