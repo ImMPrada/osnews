@@ -6,7 +6,6 @@ class CreateFeedItems < ActiveRecord::Migration[8.0]
       t.datetime :publication_date
       t.index :name
 
-      t.references :company, null: false, foreign_key: true
       t.timestamps
     end
   end

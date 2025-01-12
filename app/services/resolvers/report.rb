@@ -21,11 +21,10 @@ module Resolvers
     end
 
     def add_news_to_response
-      companies = Company.all
-      report = Rss::Report.new(companies)
-      report.call
-
-      @content += report.content
+      feed_items = FeedItem.all
+      feed_items.each do |feed_item|
+        @content += "\n**#{feed_item.description}** -- #{feed_item.publication_date.to_date}"
+      end
     end
   end
 end

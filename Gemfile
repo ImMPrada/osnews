@@ -39,6 +39,7 @@ gem 'thruster', require: false
 # gem "rack-cors"
 
 group :test do
+  gem 'timecop'
   gem 'vcr'
   gem 'webmock'
 end
@@ -71,3 +72,5 @@ end
 gem 'jbuilder', '~> 2.13'
 
 gem 'rss', '~> 0.3.1'
+
+gem 'delayed_job_active_record', '~> 4.1'
