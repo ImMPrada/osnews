@@ -1,7 +1,11 @@
-class ReportNewVersionsJob < ApplicationJob
-  queue_as :default
+class NewVersionsNoticeReport
+  attr_reader :feed_items
 
-  def perform(feed_items)
+  def initialize(feed_items)
+    @feed_items = feed_items
+  end
+
+  def call
     return if feed_items.empty?
 
     content = "🤖 **we have some news!!**\n\n"

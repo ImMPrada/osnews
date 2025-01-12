@@ -35,9 +35,10 @@ module Rss
       feed_items.each do |item|
         title = item.title
         next unless title =~ TITLE_REGEX
+        next if title.include?('beta')
 
         os_name = title.split.first
-        next unless !items_by_os[os_name] || newer_version?(item, items_by_os[os_name])
+        next if items_by_os[os_name]
 
         items_by_os[os_name] = item
       end
@@ -49,7 +50,7 @@ module Rss
       date1 = item1.respond_to?(:pubDate) ? item1.pubDate : item1.publication_date
       date2 = item2.respond_to?(:pubDate) ? item2.pubDate : item2.publication_date
 
-      date1.to_s > date2.to_s
+      date1 > date2
     end
 
     def save_items_to_db
@@ -60,7 +61,7 @@ module Rss
         update_if_newer(existing_item, data)
       end
 
-      ReportNewVersionsJob.perform_later(updated_items_list)
+      NewVersionsNoticeReport.new(updated_items_list).call
     end
 
     def create_new_record(name, data)
