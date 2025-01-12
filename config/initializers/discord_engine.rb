@@ -3,5 +3,6 @@ DiscordEngine.bot_token = ENV['DISCORD_TOKEN']
 DiscordEngine.application_id = ENV['DISCORD_APP_ID']
 
 DiscordEngine.resolvers = [
-  'Resolvers::Connect'
+  'Resolvers::Connect',
+  'Resolvers::Report'
 ]
